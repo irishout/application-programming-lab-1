@@ -6,7 +6,7 @@ class User:
         self.email = email
 
 class Author(User):
-    def __init__(self, user_id, name, email, biography, rating, social_media, books):
+    def __init__(self, user_id: int, name: str, email: str, biography: str, rating: float, social_media: dict, books: list):
         super().__init__(user_id, name, email)
         self.biography = biography
         self.rating = rating
@@ -24,28 +24,27 @@ class Author(User):
         return {
             'Имя': self.name,
             'Биография': self.biography,
-            'Написано книг': len(books),
-            'Ссылка на соц. сети': self.social_media
+            'Написано книг': len(self.books),
+            'Cоц. сети': self.social_media
         }
 
 class Castomer(User):
-    def __init__(self, user_id, name, email, balance):
+    def __init__(self, user_id: int, name: str, email: str, balance: float):
         super().__init__(user_id, name, email)
         self.balance = balance
-        self.buy_list = []
         self.library = []
 
-    def get_info(self):
+    def get_info(self):                                  
         return {
             'Имя': self.name,
             'Баланс': self.balance,
             'Библеотека': self.library,
         }
-
-    def add_book_to_list(self, book):                    #Добавление книги в корзину покупок
-        self.buy_list.append(book)
-
+    
+    def add_funds(self, replenishment):                  #Пополнение баланса 
+        self.balance += replenishment
 
 testus = Castomer(251521, 'klark', 'dsfsdf', 100)
-testus.add_book_to_list('it')
-print(testus.buy_list)
+
+
+
