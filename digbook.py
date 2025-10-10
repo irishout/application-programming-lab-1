@@ -46,7 +46,23 @@ class ShoppingCart:
         }
     
 class Purchase:
-    pass
+    def __init__(self, purchase_id: int, payment_method: str, shop_cart: ShoppingCart):
+        self.purchase_id = purchase_id
+        self.shop_cart = shop_cart
+    
+    def payment(self):
+        self.shop_cart.castomer.balance -= self.shop_cart.get_sum()
+        self.shop_cart.castomer.library += self.shop_cart.items
+
+
+    def get_recepit(self):
+        recepit = {
+            'id операции': self.purchase_id,
+            'информация': self.shop_cart.get_info()
+        }
+
+        self.shop_cart.items = []
+        return recepit
 
 testbook = DigitalBook('123','веды', 'дрочеслав', 300, 'погрузитесь в реальную историю', ['славяне', 'ящеры'])
 testcart = ShoppingCart(testus)

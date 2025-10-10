@@ -7,7 +7,7 @@ class User:
         self.email = email
 
 class Author(User):
-    def __init__(self, user_id: int, name: str, email: str, biography: str, rating: float, social_media: dict, books_id: List[int]): 
+    def __init__(self, user_id: int, name: str, email: str, biography: str, rating: float, social_media: dict, books_id: list[int]): 
         super().__init__(user_id, name, email)
         self.biography = biography
         self.rating = rating
