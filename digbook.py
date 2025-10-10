@@ -1,7 +1,7 @@
-from userClasses import testus
+from userClasses import Castomer, Author, testus
 
 class DigitalBook:
-    def __init__(self, book_id: int, title, author, price, description, tags):
+    def __init__(self, book_id: int, title: str, author: Author, price: float, description: str, tags: list):
         self.book_id = book_id
         self.title = title
         self.author = author
@@ -18,10 +18,9 @@ class DigitalBook:
             'Цена': self.price
         }
     
-class ShoppingCart(DigitalBook):
-    def __init__(self, user_id, balance):
-        self.user_id = user_id
-        self.balance = balance
+class ShoppingCart:
+    def __init__(self, castomer: Castomer):
+        self.castomer = castomer
         self.items = []
 
     def add_book(self, book: DigitalBook):
@@ -45,9 +44,12 @@ class ShoppingCart(DigitalBook):
             'Список покупок': self.items,
             'Сумма': self.get_sum()
         }
+    
+class Purchase:
+    pass
 
 testbook = DigitalBook('123','веды', 'дрочеслав', 300, 'погрузитесь в реальную историю', ['славяне', 'ящеры'])
-testcart = ShoppingCart(testus.user_id, testus.balance)
+testcart = ShoppingCart(testus)
 testcart.add_book(testbook)
-print(testcart.get_info())
+print(testbook.get_info())
 
