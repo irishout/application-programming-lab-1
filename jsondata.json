@@ -1,0 +1,20 @@
+{
+  "bookstore": {
+    "castomers": [
+        {}
+    ],
+    "authors":[
+        {}
+    ]
+    ,
+    "books": [
+        {}
+    ],
+    "shopping_carts": [
+        {}
+    ],
+    "purchases": [
+        {}
+    ]
+  }
+}

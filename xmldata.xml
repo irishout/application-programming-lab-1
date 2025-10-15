@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bookstore_system>
+    <customers>
+
+    </customers>
+
+    <authors>
+
+    </authors>
+
+    <books>
+
+    </books>
+
+    <shopping_carts>
+
+    </shopping_carts>
+
+    <purchases>
+
+    </purchases>
+</bookstore_system>

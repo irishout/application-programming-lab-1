@@ -12,4 +12,4 @@ shopcart_cast.add_book(book)
 
 purch = Purchase(155, shopcart_cast)
 purch.payment()
-print(purch.purchased_books)
+
