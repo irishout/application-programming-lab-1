@@ -66,7 +66,7 @@ class Author(User):
             'Cоц. сети': self.social_media
         }
 
-class Castomer(User):
+class Customer(User):
     def __init__(self, user_id: int, name: str, email: str, balance: float):
         super().__init__(user_id, name, email)
         self.balance = balance

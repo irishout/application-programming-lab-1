@@ -1,21 +1,16 @@
-from userClasses import Castomer, Author
+from userClasses import Customer, Author
 from exeptions import *
 
 class DigitalBook:
-    def __init__(self, book_id: int, title: str, author: Author, price: float, description: str, tags: list):
+    def __init__(self, book_id: int, title: str, author_id: int, price: float, description: str, tags: list):
         self.book_id = book_id
         self.title = title
-        self.author = author
+        self.author_id = author_id
         self.price = price
         self.description = description
         self.tags = tags 
 
-        self.validate_book_data(book_id, title, price)
-
-        try:
-            author.publish_book(book_id)
-        except BookError as e:
-            raise BookError(f"Ошибка при публикации книги: {e}", 2005)        
+        self.validate_book_data(book_id, title, price)   
 
     def validate_book_data(self, book_id: int, title: str, price: float): #Валидация данных книги
         if not isinstance(book_id, int) or book_id <= 0:
@@ -33,17 +28,17 @@ class DigitalBook:
     def get_info(self):
         return {
             'Название': self.title,
-            'Автор': self.author,
+            'ID_Автор': self.author_id,
             'Теги': self.tags,
             'Описание': self.description,
             'Цена': self.price
         }
     
 class ShoppingCart:
-    def __init__(self, castomer: Castomer):
-        if not isinstance(castomer, Castomer):
+    def __init__(self, customer: Customer):
+        if not isinstance(customer, Customer):
             raise UserError("Корзина должна быть привязана к покупателю", 1008)
-        self.castomer = castomer
+        self.customer = customer
         self.items = []
         
 
@@ -104,15 +99,15 @@ class Purchase:
             books_to_buy = self.shop_cart.checkout()
             total_ammount= self.shop_cart.get_sum()
 
-            if not self.shop_cart.castomer.cant_afford(total_ammount):
-                self.shop_cart.castomer.balance -= total_ammount
-                self.shop_cart.castomer.library += books_to_buy
+            if not self.shop_cart.customer.cant_afford(total_ammount):
+                self.shop_cart.customer.balance -= total_ammount
+                self.shop_cart.customer.library += books_to_buy
                 self.purchased_books = books_to_buy
                 self.info = self.shop_cart.get_info() 
                 self.shop_cart.items = []
 
             else:
-                raise InsufficientFundsError(self.shop_cart.castomer.balance, self.shop_cart.get_sum())
+                raise InsufficientFundsError(self.shop_cart.customer.balance, self.shop_cart.get_sum())
             
         except (EmptyCartError, InsufficientFundsError) as e: #известные исключения
             raise e
