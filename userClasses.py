@@ -18,7 +18,7 @@ class User:
     def validate_name(self, name: str) -> None:
         """Валидация имени"""
         if not name or not isinstance(name, str):
-            raise UserError("Имя не может быть пустым", 1004)
+            raise UserError("Имя должно быть в строковом виде", 1004)
         if len(name) < 2:
             raise UserError("Имя должно содержать минимум 2 символа", 1005)    
 
