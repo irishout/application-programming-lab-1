@@ -6,7 +6,7 @@ class JSONDataManager:
     def __init__(self, filename="jsondata.json"):
         self.filename = filename
     
-    def save_data(self, customers, authors, books, shopping_carts, purchases):
+    def save_data(self, customers: Customer, authors: Author, books: DigitalBook, shopping_carts: ShoppingCart, purchases: Purchase):
         try:
             data = {
                 "bookstore": {
@@ -51,7 +51,7 @@ class JSONDataManager:
             print(f"Ошибка при загрузке JSON: {e}")
             return [], [], [], [], []
     
-    def save_customers(self, customers):
+    def save_customers(self, customers: list[Customer]):
         """Сериализация покупателей"""
         result = []
         for customer in customers:
@@ -64,7 +64,7 @@ class JSONDataManager:
             })
         return result
     
-    def save_authors(self, authors):
+    def save_authors(self, authors: list[Author]):
         """Сериализация авторов"""
         result = []
         for author in authors:
@@ -79,7 +79,7 @@ class JSONDataManager:
             })
         return result
     
-    def save_books(self, books):
+    def save_books(self, books: list[DigitalBook]):
         """Сериализация книг"""
         result = []
         for book in books:
@@ -93,7 +93,7 @@ class JSONDataManager:
             })
         return result
     
-    def save_shopping_carts(self, shopping_carts):
+    def save_shopping_carts(self, shopping_carts: list[ShoppingCart]):
         """Сериализация корзин"""
         result = []
         for cart in shopping_carts:
@@ -103,7 +103,7 @@ class JSONDataManager:
             })
         return result
     
-    def save_purchases(self, purchases):
+    def save_purchases(self, purchases: list[Purchase]):
         """Сериализация покупок"""
         result = []
         for purchase in purchases:
