@@ -6,13 +6,13 @@ class BookStoreError(Exception): #Базовое исключение
         self.error_code = error_code
         super().__init__(self.message)
     
-    def __str__(self): #Строковое представление исключения
+    def __str__(self) -> str: #Строковое представление исключения
 
         if self.error_code:
             return f"[{self.error_code}] {self.message}"
         return self.message
     
-    def get_error_info(self): #информация об ошибки 
+    def get_error_info(self) -> dict: #информация об ошибки 
         return {
             'error_type': self.__class__.__name__,
             'message': self.message,

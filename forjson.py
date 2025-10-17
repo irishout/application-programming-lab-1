@@ -10,11 +10,11 @@ class JSONDataManager:
         try:
             data = {
                 "bookstore": {
-                    "customers": self.save_customers(customers),
-                    "authors": self.save_authors(authors),
-                    "books": self.save_books(books),
-                    "shopping_carts": self.save_shopping_carts(shopping_carts),
-                    "purchases": self.save_purchases(purchases)
+                    "customers": self.__save_customers(customers),
+                    "authors": self.__save_authors(authors),
+                    "books": self.__save_books(books),
+                    "shopping_carts": self.__save_shopping_carts(shopping_carts),
+                    "purchases": self.__save_purchases(purchases)
                 }
             }
             
@@ -34,15 +34,15 @@ class JSONDataManager:
             
             bookstore_data = data.get("bookstore", {})
             
-            customers = self.load_customers(bookstore_data.get("customers", []))
-            authors = self.load_authors(bookstore_data.get("authors", []))
+            customers = self.__load_customers(bookstore_data.get("customers", []))
+            authors = self.__load_authors(bookstore_data.get("authors", []))
             books_data = bookstore_data.get("books", [])
             shopping_carts_data = bookstore_data.get("shopping_carts", [])
             purchases_data = bookstore_data.get("purchases", [])
             
-            books = self.load_books(books_data)
-            shopping_carts = self.load_shopping_carts(shopping_carts_data, customers, books)
-            purchases = self.load_purchases(purchases_data, customers, books)
+            books = self.__load_books(books_data)
+            shopping_carts = self.__load_shopping_carts(shopping_carts_data, customers, books)
+            purchases = self.__load_purchases(purchases_data, customers, books)
             
             print(f"Данные успешно загружены из {self.filename}")
             return customers, authors, books, shopping_carts, purchases
@@ -51,7 +51,7 @@ class JSONDataManager:
             print(f"Ошибка при загрузке JSON: {e}")
             return [], [], [], [], []
     
-    def save_customers(self, customers: list[Customer]):
+    def __save_customers(self, customers: list[Customer]):
         """Сериализация покупателей"""
         result = []
         for customer in customers:
@@ -64,7 +64,7 @@ class JSONDataManager:
             })
         return result
     
-    def save_authors(self, authors: list[Author]):
+    def __save_authors(self, authors: list[Author]):
         """Сериализация авторов"""
         result = []
         for author in authors:
@@ -79,7 +79,7 @@ class JSONDataManager:
             })
         return result
     
-    def save_books(self, books: list[DigitalBook]):
+    def __save_books(self, books: list[DigitalBook]):
         """Сериализация книг"""
         result = []
         for book in books:
@@ -93,7 +93,7 @@ class JSONDataManager:
             })
         return result
     
-    def save_shopping_carts(self, shopping_carts: list[ShoppingCart]):
+    def __save_shopping_carts(self, shopping_carts: list[ShoppingCart]):
         """Сериализация корзин"""
         result = []
         for cart in shopping_carts:
@@ -103,7 +103,7 @@ class JSONDataManager:
             })
         return result
     
-    def save_purchases(self, purchases: list[Purchase]):
+    def __save_purchases(self, purchases: list[Purchase]):
         """Сериализация покупок"""
         result = []
         for purchase in purchases:
@@ -115,7 +115,7 @@ class JSONDataManager:
             })
         return result
     
-    def load_customers(self, customers_data):
+    def __load_customers(self, customers_data):
         """Десериализация покупателей"""
         customers = []
         for data in customers_data:
@@ -132,7 +132,7 @@ class JSONDataManager:
                 print(f"Ошибка при создании покупателя: {e}")
         return customers
     
-    def load_authors(self, authors_data):
+    def __load_authors(self, authors_data):
         """Десериализация авторов"""
         authors = []
         for data in authors_data:
@@ -151,7 +151,7 @@ class JSONDataManager:
                 print(f"Ошибка при создании автора: {e}")
         return authors
     
-    def load_books(self, books_data):
+    def __load_books(self, books_data):
         """Десериализация книг"""
         books = []
         
@@ -170,7 +170,7 @@ class JSONDataManager:
                 print(f"Ошибка при создании книги: {e}")
         return books
     
-    def load_shopping_carts(self, carts_data, customers, books):
+    def __load_shopping_carts(self, carts_data, customers, books):
         """Десериализация корзин"""
         shopping_carts = []
         customer_dict = {customer.user_id: customer for customer in customers}
@@ -194,7 +194,7 @@ class JSONDataManager:
                 print(f"Ошибка при создании корзины: {e}")
         return shopping_carts
     
-    def load_purchases(self, purchases_data, customers, books):
+    def __load_purchases(self, purchases_data, customers, books):
         """Десериализация покупок"""
         purchases = []
         customer_dict = {customer.user_id: customer for customer in customers}

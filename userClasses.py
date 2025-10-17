@@ -2,27 +2,27 @@ from exeptions import *
 
 class User:
     def __init__(self, user_id: int, name: str, email: str):
-        self.validate_user_id(user_id)
-        self.validate_name(name)
-        self.validate_email(email)
+        self._validate_user_id(user_id)
+        self._validate_name(name)
+        self._validate_email(email)
         
         self.user_id = user_id
         self.name = name
         self.email = email
 
-    def validate_user_id(self, user_id: int) -> None:
+    def _validate_user_id(self, user_id: int) -> None:
         """Валидация ID пользователя"""
         if not isinstance(user_id, int) or user_id <= 0:
             raise UserError(f"Неверный ID пользователя: {user_id}", 1003)    
     
-    def validate_name(self, name: str) -> None:
+    def _validate_name(self, name: str) -> None:
         """Валидация имени"""
         if not name or not isinstance(name, str):
             raise UserError("Имя должно быть в строковом виде", 1004)
         if len(name) < 2:
             raise UserError("Имя должно содержать минимум 2 символа", 1005)    
 
-    def validate_email(self, email: str) -> None:
+    def _validate_email(self, email: str) -> None:
         """Валидация email"""
         import re
         pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -33,14 +33,14 @@ class Author(User):
     def __init__(self, user_id: int, name: str, email: str, biography: str, rating: float, social_media: dict, books_id: list[int]): 
         super().__init__(user_id, name, email)
 
-        self.validate_rating(rating)
+        self._validate_rating(rating)
 
         self.biography = biography
         self.rating = rating
         self.social_media = social_media
         self.books_id = books_id  
         
-    def validate_rating(self, rating: float) -> None:
+    def _validate_rating(self, rating: float) -> None:
         """Валидация рейтинга"""
         if not isinstance(rating, (int, float)) or rating < 0 or rating > 5:
             raise UserError("Рейтинг должен быть числом от 0 до 5", 1006)
@@ -55,10 +55,10 @@ class Author(User):
             raise BookError(f"Эта книга уже добавленна: {book_id}", 2005)
 
 
-    def get_books(self):
+    def get_books(self) -> list:
         return self.books_id
 
-    def get_info(self):
+    def get_info(self) -> dict:
         return {
             'Имя': self.name,
             'Биография': self.biography,
@@ -72,14 +72,15 @@ class Customer(User):
         self.balance = balance
         self.library = []
 
-    def validate_balance(self, balance: float):
+        self.__validate_balance(self.balance)
+
+    def __validate_balance(self, balance: float):
             """Валидация баланса"""
             if not isinstance(balance, (int, float)) or balance < 0:
                 raise PaymentError("Баланс не может быть отрицательным", 3003)
 
 
-
-    def get_info(self):                                  
+    def get_info(self) -> dict:                                  
         return {
             'Имя': self.name,
             'Баланс': self.balance,

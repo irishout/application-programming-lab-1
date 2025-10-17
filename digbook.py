@@ -10,9 +10,9 @@ class DigitalBook:
         self.description = description
         self.tags = tags 
 
-        self.validate_book_data(book_id, title, price)   
+        self._validate_book_data(book_id, title, price)   
 
-    def validate_book_data(self, book_id: int, title: str, price: float): #Валидация данных книги
+    def _validate_book_data(self, book_id: int, title: str, price: float): #Валидация данных книги
         if not isinstance(book_id, int) or book_id <= 0:
             raise InvalidBookDataError("book_id", f"Должен быть положительным числом: {book_id}")
         
@@ -25,7 +25,7 @@ class DigitalBook:
         if not isinstance(price, (int, float)) or price < 0:
             raise NegativePriceError(price)
 
-    def get_info(self):
+    def get_info(self) -> dict:
         return {
             'Название': self.title,
             'ID_Автор': self.author_id,
@@ -60,19 +60,19 @@ class ShoppingCart:
         else:
             raise BookError(f"Книга '{book.title}' не найдена в корзине", 2008) 
 
-    def get_sum(self):
+    def get_sum(self) -> int:
         sum = 0
         for book in self.items:
             sum += book.price
         return sum
 
-    def checkout(self):
+    def checkout(self) -> list:
         if self.items:
             return self.items
         else:
             raise EmptyCartError()
     
-    def get_info(self):
+    def get_info(self) -> dict:
         return {
             'Список покупок': self.items,
             'Сумма': self.get_sum()
@@ -80,13 +80,13 @@ class ShoppingCart:
     
 class Purchase:
     def __init__(self, purchase_id: int, shop_cart: ShoppingCart):
-        self.validate_purchase_data(purchase_id, shop_cart)
+        self._validate_purchase_data(purchase_id, shop_cart)
 
         self.purchase_id = purchase_id
         self.shop_cart = shop_cart
         self.purchased_books = []
 
-    def validate_purchase_data(self, purchase_id: int, shop_cart: ShoppingCart): #Валидация данных покупки
+    def _validate_purchase_data(self, purchase_id: int, shop_cart: ShoppingCart): #Валидация данных покупки
             if not isinstance(purchase_id, int) or purchase_id <= 0:
                 raise PaymentError(f"Неверный ID покупки: {purchase_id}", 3005)
             
@@ -115,7 +115,7 @@ class Purchase:
         except Exception as e: #неизвестные исключения
             raise PaymentError(f"Ошибка при обработке платежа: {e}", 3007)
 
-    def get_recepit(self):
+    def get_recepit(self) -> dict:
         if not self.purchased_books:
             raise PaymentError("Покупка не была совершена", 3008)
         recepit = {
