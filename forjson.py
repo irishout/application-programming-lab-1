@@ -51,6 +51,7 @@ class JSONDataManager:
             print(f"Ошибка при загрузке JSON: {e}")
             return [], [], [], [], []
     
+    
     def __save_customers(self, customers: list[Customer]):
         """Сериализация покупателей"""
         result = []
@@ -224,3 +225,86 @@ class JSONDataManager:
             except Exception as e:
                 print(f"Ошибка при создании покупки: {e}")
         return purchases
+
+
+    def delete_castomer(self, customer_id):
+        try:    
+            customers, authors, books, shopping_carts, purchases = self.load_data() #грузим все данные
+            original_count = len(customers)
+            customers = [c for c in customers if c.user_id != customer_id] #удаляем кастомера по id
+
+            if original_count == len(customers):
+                print("Покупатель не найден")
+                return False
+
+            shopping_carts = [cart for cart in shopping_carts if cart.customer.user_id != customer_id] #удаляем связанные объекты
+            purchases = [p for p in purchases if p.shop_cart.customer.user_id != customer_id]
+
+            self.save_data(customers, authors, books, shopping_carts, purchases)# Сохраняем обновленные данные
+            print(f"Покупатель с id {customer_id} успешно удален")
+            return True
+        except Exception as e:
+            print(f"Ошибка при удалении покупателя: {e}")
+            return False
+
+    def delete_book(self, book_id): #DRY до связи :(
+        try:    
+            customers, authors, books, shopping_carts, purchases = self.load_data() #грузим все данные
+            original_count = len(books)
+            books = [b for b in books if b.book_id != book_id] #удаляем книгу по id
+
+            if original_count == len(books):
+                print("Книга не найдена")
+                return False             
+
+            self.save_data(customers, authors, books, shopping_carts, purchases)# Сохраняем обновленные данные
+            print(f"Книга с id {book_id} успешно удалена")
+            return True
+        except Exception as e:
+            print(f"Ошибка при удалении книги: {e}")
+            return False
+
+    def delete_author(self, author_id):
+        try:
+            customers, authors, books, shopping_carts, purchases = self.load_data()#грузим все данные  
+
+            books_id_for_delete = [a.books_id for a in authors if a.user_id == author_id]#сохраняем id книг для удаления 
+            # Удаляем автора
+            original_count = len(authors)
+            authors = [a for a in authors if a.user_id != author_id]
+            if len(authors) == original_count:
+                print(f"Автор с id {author_id} не найден")
+                return False
+            
+            # Сохраняем обновленные данные
+            self.save_data(customers, authors, books, shopping_carts, purchases)
+            print(f"Автор с ID {author_id} успешно удален")
+            
+            #удаляем книги автора
+            if books_id_for_delete:
+                for books_id in books_id_for_delete:
+                    for b in books_id:
+                        self.delete_book(b)
+            return True
+        
+        except Exception as e:
+            print(f"Ошибка при удалении автора: {e}")
+            return False
+        
+    def delete_purchase(self, purchase_id):
+        try:    
+            customers, authors, books, shopping_carts, purchases = self.load_data() #грузим все данные
+            original_count = len(purchases)
+            purchases = [p for p in purchases if p.purchase_id != purchase_id] #удаляем покупку по id
+
+            if original_count == len(purchases):
+                print("Покупка не найдена")
+                return False             
+
+            self.save_data(customers, authors, books, shopping_carts, purchases)# Сохраняем обновленные данные
+            print(f"Покупка с id {purchase_id} успешно удалена")
+            return True
+        except Exception as e:
+            print(f"Ошибка при удалении покупки: {e}")
+            return False        
+

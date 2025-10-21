@@ -16,5 +16,8 @@ purch = Purchase(155, shopcart_cast)
 #jsonManager1 = JSONDataManager()
 #jsonManager1.save_data([cast],[testauth],[book],[shopcart_cast], [purch])
 
-#jsonManager2 = JSONDataManager("testjson.json")
-#customers, authors, books, carts, purchases = jsonManager2.load_data()
+jsonManager2 = JSONDataManager("testjson.json")
+jsonManager2.delete_purchase(5001)
+
+
+
