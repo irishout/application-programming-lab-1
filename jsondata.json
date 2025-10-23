@@ -1,21 +1,52 @@
 {
   "bookstore": {
-    "castomers": [
-        {}
+    "customers": [
+      {
+        "user_id": 1,
+        "name": "vas",
+        "email": "mr.kul.06@mail.ru",
+        "balance": 1,
+        "library": []
+      }
     ],
-    "authors":[
-        {}
-    ]
-    ,
+    "authors": [
+      {
+        "user_id": 565,
+        "name": "king",
+        "email": "mr.sdpgiu@mail.ru",
+        "biography": "я пишу книги",
+        "rating": 4.5,
+        "social_media": {
+          "inst": "ссылка"
+        },
+        "books_id": []
+      }
+    ],
     "books": [
-        {}
+      {
+        "book_id": 105,
+        "title": "IT",
+        "author_id": 565,
+        "price": 400,
+        "description": "страшно очень очень",
+        "tags": []
+      }
     ],
     "shopping_carts": [
-        {}
+      {
+        "customer_id": 1,
+        "items": [
+          105
+        ]
+      }
     ],
     "purchases": [
-        {}
+      {
+        "purchase_id": 155,
+        "customer_id": 1,
+        "purchased_books": [],
+        "total_amount": 400
+      }
     ]
   }
 }
-

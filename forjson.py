@@ -6,6 +6,27 @@ class JSONDataManager:
     def __init__(self, filename="jsondata.json"):
         self.filename = filename
     
+    #тщетные попытки сделать проверку на id
+    # def __id_check(self, id, classforcheck: str):
+    #     with open(self.filename, 'r', encoding='utf-8') as f:             
+    #         data = json.load(f)
+            
+    #     bookstore_data = data.get("bookstore", {})        
+    #     objects = bookstore_data[classforcheck]
+    #     print(objects)
+    #     if classforcheck == "customers" or classforcheck == "authors":
+    #         ids = [object["user_id"] for object in objects]
+    #     elif classforcheck == "books":
+    #         ids = [object.book_id for object in objects]
+    #     elif classforcheck == "purchases":
+    #         ids = [object.purchase_id for object in objects]
+
+        
+    #     if id in ids:
+    #         return True
+    #     else: False
+
+
     def save_data(self, customers: Customer, authors: Author, books: DigitalBook, shopping_carts: ShoppingCart, purchases: Purchase):
         try:
             data = {
@@ -27,7 +48,7 @@ class JSONDataManager:
             print(f"Ошибка при сохранении JSON: {e}")
     
     def load_data(self):
-        """Загрузка данных из JSON файла"""
+        #Загрузка данных из JSON файла
         try:
             with open(self.filename, 'r', encoding='utf-8') as f:
                 data = json.load(f)
@@ -53,7 +74,14 @@ class JSONDataManager:
     
     
     def __save_customers(self, customers: list[Customer]):
-        """Сериализация покупателей"""
+        #Сериализация покупателей
+
+        # for c in customers:
+        #     if self.__id_check(c.user_id, "customers"):
+        #         print("Пользователь с таким ID уже существует")
+        #         return customers_list
+            
+
         result = []
         for customer in customers:
             result.append({
@@ -66,7 +94,7 @@ class JSONDataManager:
         return result
     
     def __save_authors(self, authors: list[Author]):
-        """Сериализация авторов"""
+        #Сериализация автороd
         result = []
         for author in authors:
             result.append({
@@ -81,7 +109,7 @@ class JSONDataManager:
         return result
     
     def __save_books(self, books: list[DigitalBook]):
-        """Сериализация книг"""
+        #Сериализация книг
         result = []
         for book in books:
             result.append({
@@ -95,7 +123,7 @@ class JSONDataManager:
         return result
     
     def __save_shopping_carts(self, shopping_carts: list[ShoppingCart]):
-        """Сериализация корзин"""
+        #Сериализация корзин
         result = []
         for cart in shopping_carts:
             result.append({
@@ -105,7 +133,7 @@ class JSONDataManager:
         return result
     
     def __save_purchases(self, purchases: list[Purchase]):
-        """Сериализация покупок"""
+        #Сериализация покупок
         result = []
         for purchase in purchases:
             result.append({
@@ -117,7 +145,7 @@ class JSONDataManager:
         return result
     
     def __load_customers(self, customers_data):
-        """Десериализация покупателей"""
+        #Десериализация покупателей
         customers = []
         for data in customers_data:
             try:
@@ -134,7 +162,7 @@ class JSONDataManager:
         return customers
     
     def __load_authors(self, authors_data):
-        """Десериализация авторов"""
+        #Десериализация авторов
         authors = []
         for data in authors_data:
             try:
@@ -153,7 +181,7 @@ class JSONDataManager:
         return authors
     
     def __load_books(self, books_data):
-        """Десериализация книг"""
+        #Десериализация книг
         books = []
         
         for data in books_data:
@@ -172,7 +200,7 @@ class JSONDataManager:
         return books
     
     def __load_shopping_carts(self, carts_data, customers, books):
-        """Десериализация корзин"""
+        #Десериализация корзин
         shopping_carts = []
         customer_dict = {customer.user_id: customer for customer in customers}
         book_dict = {book.book_id: book for book in books}
@@ -196,7 +224,7 @@ class JSONDataManager:
         return shopping_carts
     
     def __load_purchases(self, purchases_data, customers, books):
-        """Десериализация покупок"""
+        #Десериализация покупок
         purchases = []
         customer_dict = {customer.user_id: customer for customer in customers}
         book_dict = {book.book_id: book for book in books}
@@ -226,8 +254,27 @@ class JSONDataManager:
                 print(f"Ошибка при создании покупки: {e}")
         return purchases
 
-
-    def delete_castomer(self, customer_id):
+    def create_customer(self, customer):
+        """Создание нового покупателя"""
+        try:
+            customers, authors, books, shopping_carts, purchases = self.load_data()
+            customers.append(customer)
+            self.save_data(customers, authors, books, shopping_carts, purchases)
+            print(f"Покупатель {customer.name} успешно создан")
+            return True
+        except Exception as e:
+            print(f"Ошибка при создании покупателя: {e}")
+            return False
+        
+    def read_customer(self, customer_id):
+        """Чтение покупателя по ID"""
+        customers, _, _, _, _ = self.load_data()
+        for customer in customers:
+            if customer.user_id == customer_id:
+                return customer
+        return None
+    
+    def delete_customer(self, customer_id):
         try:    
             customers, authors, books, shopping_carts, purchases = self.load_data() #грузим все данные
             original_count = len(customers)
@@ -247,6 +294,26 @@ class JSONDataManager:
             print(f"Ошибка при удалении покупателя: {e}")
             return False
 
+    def create_book(self, book):
+        """Создание новой книги"""
+        try:
+            customers, authors, books, shopping_carts, purchases = self.load_data()
+            books.append(book)
+            self.save_data(customers, authors, books, shopping_carts, purchases)
+            print(f"Книга '{book.title}' успешно создана")
+            return True
+        except Exception as e:
+            print(f"Ошибка при создании книги: {e}")
+            return False
+        
+    def read_book(self, book_id):
+        """Чтение книги по ID"""
+        _, _, books, _, _ = self.load_data()
+        for book in books:
+            if book.book_id == book_id:
+                return book
+        return None
+    
     def delete_book(self, book_id): #DRY до связи :(
         try:    
             customers, authors, books, shopping_carts, purchases = self.load_data() #грузим все данные
@@ -263,6 +330,25 @@ class JSONDataManager:
         except Exception as e:
             print(f"Ошибка при удалении книги: {e}")
             return False
+        
+    def create_author(self, author):
+        try:
+            customers, authors, books, shopping_carts, purchases = self.load_data()
+            authors.append(author)
+            self.save_data(customers, authors, books, shopping_carts, purchases)
+            print(f"Автор {author.name} успешно создан")
+            return True
+        except Exception as e:
+            print(f"Ошибка при создании автора: {e}")
+            return False
+    
+    def read_author(self, author_id):
+        """Чтение автора по ID"""
+        _, authors, _, _, _ = self.load_data()
+        for author in authors:
+            if author.user_id == author_id:
+                return author
+        return None
 
     def delete_author(self, author_id):
         try:
@@ -308,3 +394,33 @@ class JSONDataManager:
             print(f"Ошибка при удалении покупки: {e}")
             return False        
 
+    def clear_all_data(self):
+        try:
+            data = {
+            "bookstore": {
+                "castomers": [
+                    {}
+                ],
+                "authors":[
+                    {}
+                ]
+                ,
+                "books": [
+                    {}
+                ],
+                "shopping_carts": [
+                    {}
+                ],
+                "purchases": [
+                    {}
+                ]
+                 }
+            }
+            
+            with open(self.filename, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+            
+            print(f"Данные успешно удалены")
+            
+        except Exception as e:
+            print(f"Ошибка при удалении JSON: {e}")
